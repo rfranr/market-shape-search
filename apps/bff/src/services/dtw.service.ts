@@ -1,17 +1,9 @@
 import type { DtwRequest, DtwResponse } from '@repo/shared-types';
+import { appConfig } from '../config.js';
+import { DtwApiClient } from '../modules/similarity/infra/dtw-api.client.js';
 
-const dtwApiUrl: string = process.env.DTW_API_URL ?? 'http://localhost:8000';
+const dtwApiClient: DtwApiClient = new DtwApiClient(appConfig.fastApiBaseUrl);
 
 export async function calculateDtw(body: DtwRequest): Promise<DtwResponse> {
-  const dtwResponse: globalThis.Response = await fetch(`${dtwApiUrl}/dtw`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-
-  if (!dtwResponse.ok) {
-    throw new Error(`Backend DTW error: ${dtwResponse.status}`);
-  }
-
-  return (await dtwResponse.json()) as DtwResponse;
+  return dtwApiClient.calculateDistance(body);
 }
