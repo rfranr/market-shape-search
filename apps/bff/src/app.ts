@@ -1,15 +1,16 @@
 import cors from 'cors';
 import express from 'express';
+import type { NextFunction, Request, Response, Express } from 'express';
 import type { DtwRequest, DtwResponse, HelloResponse } from '@repo/shared-types';
 
-const app = express();
-const port = Number(process.env.PORT ?? 3001);
-const dtwApiUrl = process.env.DTW_API_URL ?? 'http://localhost:8000';
+const dtwApiUrl: string = process.env.DTW_API_URL ?? 'http://localhost:8000';
+
+const app: Express = express();
 
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN ?? 'http://localhost:3000' }));
 app.use(express.json());
 
-app.get('/api/hello', (_req, res) => {
+app.get('/api/hello', (_req: Request, res: Response<HelloResponse>): void => {
   const response: HelloResponse = {
     message: 'HelloWorld des del BFF 👋',
     source: 'bff'
@@ -18,10 +19,10 @@ app.get('/api/hello', (_req, res) => {
   res.json(response);
 });
 
-app.post('/api/dtw', async (req, res, next) => {
+app.post('/api/dtw', async (req: Request, res: Response<DtwResponse>, next: NextFunction): Promise<void> => {
   try {
-    const body = req.body as DtwRequest;
-    const dtwResponse = await fetch(`${dtwApiUrl}/dtw`, {
+    const body: DtwRequest = req.body as DtwRequest;
+    const dtwResponse: globalThis.Response = await fetch(`${dtwApiUrl}/dtw`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -31,13 +32,11 @@ app.post('/api/dtw', async (req, res, next) => {
       throw new Error(`Backend DTW error: ${dtwResponse.status}`);
     }
 
-    const result = (await dtwResponse.json()) as DtwResponse;
+    const result: DtwResponse = (await dtwResponse.json()) as DtwResponse;
     res.json(result);
-  } catch (error) {
+  } catch (error: unknown) {
     next(error);
   }
 });
 
-app.listen(port, () => {
-  console.log(`BFF escoltant a http://localhost:${port}`);
-});
+export { app };
