@@ -1,0 +1,4 @@
+{
+  "vitest.workspaceConfig": "vitest.workspace.ts",
+  "js/ts.preferences.includePackageJsonAutoImports": "on"
+}
