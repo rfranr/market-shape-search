@@ -1,19 +1,14 @@
 import type { DtwRequest, DtwResponse } from '@repo/shared-types';
+import { HttpClient } from '../../../shared/http-client.js';
 
 export class DtwApiClient {
-  constructor(private readonly baseUrl: string) {}
+  private readonly httpClient: HttpClient;
+
+  constructor(baseUrl: string) {
+    this.httpClient = new HttpClient(baseUrl);
+  }
 
   async calculateDistance(request: DtwRequest): Promise<DtwResponse> {
-    const response: globalThis.Response = await fetch(`${this.baseUrl}/dtw`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(request)
-    });
-
-    if (!response.ok) {
-      throw new Error(`Backend DTW error: ${response.status}`);
-    }
-
-    return (await response.json()) as DtwResponse;
+    return this.httpClient.post<DtwResponse, DtwRequest>('/dtw', request);
   }
 }

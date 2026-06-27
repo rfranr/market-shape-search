@@ -4,10 +4,11 @@ import type { Express } from 'express';
 import { analysisRouter } from './routes/analysis.routes.js';
 import { healthRouter } from './routes/health.routes.js';
 import { tickersRouter } from './routes/tickers.routes.js';
+import { config } from './shared/config.js';
 
 const app: Express = express();
 
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN ?? 'http://localhost:3000' }));
+app.use(cors({ origin: config.frontendOrigin }));
 app.use(express.json());
 
 app.use('/api', healthRouter);

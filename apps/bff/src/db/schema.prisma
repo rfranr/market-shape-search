@@ -1,0 +1,76 @@
+// Placeholder schema for future Prisma integration.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ticker {
+  id        String   @id @default(cuid())
+  symbol    String   @unique
+  name      String?
+  exchange  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  candles PriceCandle[]
+}
+
+model PriceCandle {
+  id        String   @id @default(cuid())
+  tickerId  String
+  symbol    String
+  timestamp DateTime
+  open      Float
+  high      Float
+  low       Float
+  close     Float
+  volume    Float
+  createdAt DateTime @default(now())
+
+  ticker Ticker @relation(fields: [tickerId], references: [id])
+
+  @@index([symbol, timestamp])
+}
+
+model TickerRelation {
+  id           String   @id @default(cuid())
+  sourceTicker String
+  targetTicker String
+  type         String
+  label        String?
+  createdAt    DateTime @default(now())
+
+  @@index([sourceTicker])
+  @@index([targetTicker])
+  @@index([type])
+}
+
+model SimilarityRun {
+  id        String   @id @default(cuid())
+  baseTicker String
+  from      DateTime
+  to        DateTime
+  interval  String
+  createdAt DateTime @default(now())
+
+  results SimilarityResult[]
+}
+
+model SimilarityResult {
+  id        String @id @default(cuid())
+  runId     String
+  ticker    String
+  distance  Float
+  score     Float
+  rank      Int
+
+  run SimilarityRun @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+  @@index([ticker])
+}
