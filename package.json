@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "devDependencies": {
     "turbo": "^2.10.0"
