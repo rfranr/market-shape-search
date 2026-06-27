@@ -15,7 +15,7 @@ Crea l'entorn aïllat de Python dins del backend DTW:
 npm install
 python3 -m venv apps/backend-dtw/.venv
 apps/backend-dtw/.venv/bin/python -m pip install --upgrade pip
-apps/backend-dtw/.venv/bin/pip install -r apps/backend-dtw/requirements.txt
+apps/backend-dtw/.venv/bin/python -m pip install -r apps/backend-dtw/requirements.txt
 npm run dev
 ```
 
