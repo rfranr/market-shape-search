@@ -52,6 +52,10 @@ Quan calgui optimitzar el càlcul DTW, podem afegir dependències numèriques co
 - `GET http://localhost:8000/hello`
 - `POST http://localhost:8000/dtw`
 
+## Arquitectura
+
+Les regles de boundaries del BFF estan documentades a `docs/architecture.md` i protegides amb tests a `apps/bff/src/architecture-boundaries.test.ts`.
+
 ## Workflow dev amb VS Code REST Client
 
 El repo recomana l'extensió `humao.rest-client` a `.vscode/extensions.json`.
