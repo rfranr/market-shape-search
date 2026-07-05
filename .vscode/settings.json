@@ -1,4 +1,8 @@
 {
-  "vitest.workspaceConfig": "vitest.workspace.ts",
-  "js/ts.preferences.includePackageJsonAutoImports": "on"
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "bffBaseUrl": "http://localhost:3001",
+      "dtwBaseUrl": "http://localhost:8000"
+    }
+  }
 }

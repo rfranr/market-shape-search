@@ -8,6 +8,13 @@ export class AppError extends Error {
   }
 }
 
+export class BadRequestError extends AppError {
+  constructor(message: string) {
+    super(message, 400);
+    this.name = 'BadRequestError';
+  }
+}
+
 export class NotImplementedError extends AppError {
   constructor(message: string) {
     super(message, 501);

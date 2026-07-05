@@ -1,0 +1,55 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach BFF",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 9229,
+      "restart": true,
+      "cwd": "${workspaceFolder}/apps/bff",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Attach Frontend Next Server",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 9230,
+      "restart": true,
+      "cwd": "${workspaceFolder}/apps/frontend",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Attach Backend DTW Python",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": {
+        "host": "localhost",
+        "port": 5678
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/apps/backend-dtw",
+          "remoteRoot": "."
+        }
+      ],
+      "justMyCode": true
+    },
+    {
+      "name": "Frontend Browser",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/apps/frontend"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Attach All Services",
+      "configurations": ["Attach BFF", "Attach Frontend Next Server", "Attach Backend DTW Python"],
+      "stopAll": false
+    }
+  ]
+}
