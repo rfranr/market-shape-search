@@ -48,7 +48,7 @@ export class AlpacaMarketDataClient implements MarketDataClientPort {
     url.searchParams.set('timeframe', request.timeframe);
     url.searchParams.set('start', request.start);
     url.searchParams.set('end', request.end);
-    url.searchParams.set('adjustment', request.adjustment ?? 'split');
+    url.searchParams.set('adjustment', request.adjustment ?? 'raw');
     url.searchParams.set('limit', '10000');
 
     if (pageToken !== undefined) {
