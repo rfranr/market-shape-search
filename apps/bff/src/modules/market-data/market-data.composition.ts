@@ -1,8 +1,9 @@
+import { config } from '../../shared/config.js';
 import { DownloadHistoryUseCase } from './application/download-history.usecase.js';
-import { FakeMarketDataClient } from './infra/fake-market-data.client.js';
 import { FakeMarketDataRepository } from './infra/fake-market-data.repository.js';
+import { createMarketDataClient } from './infra/market-data-client.factory.js';
 
 export const downloadHistoryUseCase: DownloadHistoryUseCase = new DownloadHistoryUseCase(
-  new FakeMarketDataClient(),
+  createMarketDataClient(config),
   new FakeMarketDataRepository()
 );
