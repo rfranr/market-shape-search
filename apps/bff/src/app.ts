@@ -6,6 +6,7 @@ import { healthRouter } from './routes/health.routes.js';
 import { marketDataRouter } from './routes/market-data.routes.js';
 import { tickersRouter } from './routes/tickers.routes.js';
 import { config } from './shared/config.js';
+import { errorHandler } from './shared/error-handler.js';
 
 const app: Express = express();
 
@@ -16,5 +17,7 @@ app.use('/api', healthRouter);
 app.use('/api', tickersRouter);
 app.use('/api', analysisRouter);
 app.use('/api', marketDataRouter);
+
+app.use(errorHandler);
 
 export { app };

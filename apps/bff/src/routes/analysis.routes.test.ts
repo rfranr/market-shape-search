@@ -36,6 +36,9 @@ describe('analysis routes', () => {
     const response = await request(app).post('/api/dtw').send({ seriesA: [], seriesB: [] });
 
     expect(response.status).toBe(503);
-    expect(response.text).toContain('HTTP request failed: 503');
+    expect(response.body).toEqual({
+      error: 'AppError',
+      message: 'HTTP request failed: 503'
+    });
   });
 });

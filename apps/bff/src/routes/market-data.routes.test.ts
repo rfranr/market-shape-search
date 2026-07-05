@@ -37,6 +37,9 @@ describe('market data routes', () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.text).toContain('start must be before end');
+    expect(response.body).toEqual({
+      error: 'BadRequestError',
+      message: 'start must be before end'
+    });
   });
 });
