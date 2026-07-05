@@ -47,6 +47,27 @@ Quan calgui optimitzar el càlcul DTW, podem afegir dependències numèriques co
 
 - `GET http://localhost:3001/api/hello`
 - `POST http://localhost:3001/api/dtw`
+- `POST http://localhost:3001/api/market-data/history/download`
 - `GET http://localhost:8000/`
 - `GET http://localhost:8000/hello`
 - `POST http://localhost:8000/dtw`
+
+## Workflow dev amb VS Code REST Client
+
+El repo recomana l'extensió `humao.rest-client` a `.vscode/extensions.json`.
+
+Per provar els serveis durant desenvolupament:
+
+1. Arrenca el monorepo amb `npm run dev`.
+2. Obre els fitxers `.http` de `requests/`.
+3. Clica `Send Request` sobre la request que vulguis executar.
+
+Fitxers disponibles:
+
+- `requests/bff.http`: requests contra el BFF.
+- `requests/backend-dtw.http`: requests directes contra FastAPI DTW.
+
+La config local de REST Client viu a `.vscode/settings.json` amb:
+
+- `bffBaseUrl`: `http://localhost:3001`
+- `dtwBaseUrl`: `http://localhost:8000`

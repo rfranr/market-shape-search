@@ -1,0 +1,14 @@
+### Backend DTW root
+GET {{dtwBaseUrl}}/
+
+### Backend DTW hello
+GET {{dtwBaseUrl}}/hello
+
+### Backend DTW distance
+POST {{dtwBaseUrl}}/dtw
+Content-Type: application/json
+
+{
+  "seriesA": [1, 2, 3],
+  "seriesB": [2, 3, 4]
+}

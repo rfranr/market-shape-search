@@ -1,0 +1,26 @@
+### BFF health
+GET {{bffBaseUrl}}/api/hello
+
+### BFF DTW proxy
+POST {{bffBaseUrl}}/api/dtw
+Content-Type: application/json
+
+{
+  "seriesA": [1, 2, 3],
+  "seriesB": [2, 3, 4]
+}
+
+### Download market data history - fake client
+POST {{bffBaseUrl}}/api/market-data/history/download
+Content-Type: application/json
+
+{
+  "ticker": {
+    "symbol": "BIO",
+    "exchange": "NYSE"
+  },
+  "timeframe": "1Day",
+  "start": "2024-01-01",
+  "end": "2026-07-05",
+  "adjustment": "split"
+}
