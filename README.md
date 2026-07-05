@@ -56,6 +56,30 @@ Quan calgui optimitzar el càlcul DTW, podem afegir dependències numèriques co
 
 Les regles de boundaries del BFF estan documentades a `docs/architecture.md` i protegides amb tests a `apps/bff/src/architecture-boundaries.test.ts`.
 
+## Debug amb VS Code
+
+El workflow recomanat continua sent arrencar-ho tot des de l'arrel:
+
+```bash
+./start-dev.sh
+```
+
+Això executa `npm run dev` amb Turbo, cada servei queda en mode watch/reload i obre el seu port de debug:
+
+- BFF Node: `9229` amb `node --watch`
+- Frontend Next server: `9230` amb `next dev`
+- Backend DTW Python/debugpy: `5678` amb `uvicorn --reload`
+
+Després, a VS Code, ves a **Run and Debug** i selecciona:
+
+- `Attach BFF`
+- `Attach Frontend Next Server`
+- `Attach Backend DTW Python`
+- o el compound `Attach All Services`
+
+No facis launch del BFF des de VS Code si ja tens `./start-dev.sh` corrent: fes attach al procés real que ha aixecat Turbo.
+
+
 ## Workflow dev amb VS Code REST Client
 
 El repo recomana l'extensió `humao.rest-client` a `.vscode/extensions.json`.
