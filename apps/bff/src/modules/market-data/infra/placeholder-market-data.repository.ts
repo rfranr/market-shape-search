@@ -1,20 +1,9 @@
+import type { MarketDataRepositoryPort } from '../application/ports/market-data-repository.port.js';
 import type { PriceCandle } from '../domain/price-candle.js';
 import type { Ticker } from '../domain/ticker.js';
+import { NotImplementedError } from '../../../shared/errors.js';
 
-export interface MarketDataRepository {
-  saveTicker(ticker: Ticker): Promise<void>;
-  savePriceCandles(symbol: string, candles: PriceCandle[]): Promise<void>;
-  getTickerHistory(symbol: string): Promise<PriceCandle[]>;
-}
-
-export class NotImplementedError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'NotImplementedError';
-  }
-}
-
-export class PlaceholderMarketDataRepository implements MarketDataRepository {
+export class PlaceholderMarketDataRepository implements MarketDataRepositoryPort {
   async saveTicker(_ticker: Ticker): Promise<void> {
     throw new NotImplementedError('Market data repository persistence is not implemented yet.');
   }

@@ -1,19 +1,8 @@
+import type { TickerRelationRepositoryPort } from '../application/ports/ticker-relation-repository.port.js';
 import type { TickerRelation, TickerRelationType } from '../domain/ticker-relation.js';
+import { NotImplementedError } from '../../../shared/errors.js';
 
-export interface TickerRelationRepository {
-  saveRelation(relation: TickerRelation): Promise<void>;
-  findRelationsByTicker(ticker: string): Promise<TickerRelation[]>;
-  findRelationsByType(ticker: string, type: TickerRelationType): Promise<TickerRelation[]>;
-}
-
-export class NotImplementedError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'NotImplementedError';
-  }
-}
-
-export class PlaceholderTickerRelationRepository implements TickerRelationRepository {
+export class PlaceholderTickerRelationRepository implements TickerRelationRepositoryPort {
   async saveRelation(_relation: TickerRelation): Promise<void> {
     throw new NotImplementedError('Ticker relation persistence is not implemented yet.');
   }

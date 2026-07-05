@@ -1,12 +1,9 @@
+import type { MarketDataClientPort } from '../application/ports/market-data-client.port.js';
 import type { PriceCandle } from '../domain/price-candle.js';
 import type { Ticker } from '../domain/ticker.js';
-import { NotImplementedError } from './market-data.repository.js';
+import { NotImplementedError } from '../../../shared/errors.js';
 
-export interface MarketDataClient {
-  downloadHistory(ticker: Ticker): Promise<PriceCandle[]>;
-}
-
-export class AlpacaMarketDataClient implements MarketDataClient {
+export class AlpacaMarketDataClient implements MarketDataClientPort {
   constructor(private readonly baseUrl: string) {}
 
   async downloadHistory(_ticker: Ticker): Promise<PriceCandle[]> {

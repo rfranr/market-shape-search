@@ -1,7 +1,8 @@
 import type { DtwRequest, DtwResponse } from '@repo/shared-types';
+import type { DtwApiClientPort } from '../application/ports/dtw-api-client.port.js';
 import { HttpClient } from '../../../shared/http-client.js';
 
-export class DtwApiClient {
+export class DtwApiClient implements DtwApiClientPort {
   private readonly httpClient: HttpClient;
 
   constructor(baseUrl: string) {
