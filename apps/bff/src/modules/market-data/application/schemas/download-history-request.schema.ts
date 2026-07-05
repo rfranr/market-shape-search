@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-const dateStringSchema = z.string().trim().min(1).refine((value) => !Number.isNaN(Date.parse(value)), {
-  message: 'Invalid date'
-});
+const dateStringSchema = z.string().trim().regex(/^\d{4}-\d{2}-\d{2}$/, 'Expected YYYY-MM-DD');
 
 export const downloadHistoryRequestSchema = z
   .object({

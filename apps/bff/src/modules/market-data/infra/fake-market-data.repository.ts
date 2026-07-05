@@ -11,7 +11,20 @@ export class FakeMarketDataRepository implements MarketDataRepositoryPort {
   }
 
   async savePriceCandles(symbol: string, candles: PriceCandle[]): Promise<void> {
-    this.candlesBySymbol.set(symbol, candles);
+    const mergedByTimestamp: Map<string, PriceCandle> = new Map<string, PriceCandle>();
+
+    for (const candle of this.candlesBySymbol.get(symbol) ?? []) {
+      mergedByTimestamp.set(candle.timestamp, candle);
+    }
+
+    for (const candle of candles) {
+      mergedByTimestamp.set(candle.timestamp, candle);
+    }
+
+    this.candlesBySymbol.set(
+      symbol,
+      [...mergedByTimestamp.values()].sort((left, right) => left.timestamp.localeCompare(right.timestamp))
+    );
   }
 
   async getTickerHistory(symbol: string): Promise<PriceCandle[]> {
