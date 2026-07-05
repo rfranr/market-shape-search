@@ -8,6 +8,8 @@ if (process.env.NODE_ENV !== 'test') {
 
 export type MarketDataProvider = 'fake' | 'alpaca';
 
+export type AlpacaMarketDataFeed = 'iex' | 'sip' | 'otc';
+
 export interface Config {
   port: number;
   frontendOrigin: string;
@@ -17,6 +19,7 @@ export interface Config {
     baseUrl: string;
     apiKey?: string;
     apiSecret?: string;
+    feed: AlpacaMarketDataFeed;
   };
 }
 
@@ -46,6 +49,18 @@ function readMarketDataProvider(value: string | undefined): MarketDataProvider {
   throw new Error(`Unsupported market data provider: ${value}`);
 }
 
+function readAlpacaFeed(value: string | undefined): AlpacaMarketDataFeed {
+  if (value === undefined || value.trim() === '') {
+    return 'iex';
+  }
+
+  if (value === 'iex' || value === 'sip' || value === 'otc') {
+    return value;
+  }
+
+  throw new Error(`Unsupported Alpaca market data feed: ${value}`);
+}
+
 export const config: Config = {
   port: readNumber(process.env.PORT, 3001),
   frontendOrigin: process.env.FRONTEND_ORIGIN ?? 'http://localhost:3000',
@@ -54,6 +69,7 @@ export const config: Config = {
   alpaca: {
     baseUrl: process.env.ALPACA_MARKET_DATA_BASE_URL ?? 'https://data.alpaca.markets',
     apiKey: readOptionalString(process.env.ALPACA_API_KEY),
-    apiSecret: readOptionalString(process.env.ALPACA_API_SECRET)
+    apiSecret: readOptionalString(process.env.ALPACA_API_SECRET),
+    feed: readAlpacaFeed(process.env.ALPACA_MARKET_DATA_FEED)
   }
 };

@@ -12,7 +12,8 @@ const baseConfig: Config = {
   alpaca: {
     baseUrl: 'https://data.alpaca.markets',
     apiKey: undefined,
-    apiSecret: undefined
+    apiSecret: undefined,
+    feed: 'iex'
   }
 };
 
@@ -30,7 +31,8 @@ describe('createMarketDataClient', () => {
       alpaca: {
         baseUrl: 'https://data.alpaca.markets',
         apiKey: 'key',
-        apiSecret: 'secret'
+        apiSecret: 'secret',
+        feed: 'iex'
       }
     });
 

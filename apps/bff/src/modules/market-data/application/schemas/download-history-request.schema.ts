@@ -21,7 +21,8 @@ export const downloadHistoryRequestSchema = z
     timeframe: z.enum(['1Min', '5Min', '15Min', '1Hour', '1Day', '1Week']),
     start: dateStringSchema,
     end: dateStringSchema,
-    adjustment: z.enum(['raw', 'split', 'dividend', 'all']).optional()
+    adjustment: z.enum(['raw', 'split', 'dividend', 'all']).optional(),
+    feed: z.enum(['iex', 'sip', 'otc']).optional()
   })
   .refine((request) => Date.parse(request.start) < Date.parse(request.end), {
     message: 'start must be before end',

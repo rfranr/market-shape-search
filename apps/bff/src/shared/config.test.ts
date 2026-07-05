@@ -12,6 +12,7 @@ describe('config', () => {
     vi.stubEnv('DTW_API_URL', undefined);
     vi.stubEnv('MARKET_DATA_PROVIDER', undefined);
     vi.stubEnv('ALPACA_MARKET_DATA_BASE_URL', undefined);
+    vi.stubEnv('ALPACA_MARKET_DATA_FEED', undefined);
     vi.stubEnv('ALPACA_API_KEY', undefined);
     vi.stubEnv('ALPACA_API_SECRET', undefined);
     vi.resetModules();
@@ -26,7 +27,8 @@ describe('config', () => {
       alpaca: {
         baseUrl: 'https://data.alpaca.markets',
         apiKey: undefined,
-        apiSecret: undefined
+        apiSecret: undefined,
+        feed: 'iex'
       }
     });
   });
@@ -37,6 +39,7 @@ describe('config', () => {
     vi.stubEnv('DTW_API_URL', 'http://localhost:9000');
     vi.stubEnv('MARKET_DATA_PROVIDER', 'alpaca');
     vi.stubEnv('ALPACA_MARKET_DATA_BASE_URL', 'https://example.alpaca.test');
+    vi.stubEnv('ALPACA_MARKET_DATA_FEED', 'sip');
     vi.stubEnv('ALPACA_API_KEY', 'key');
     vi.stubEnv('ALPACA_API_SECRET', 'secret');
     vi.resetModules();
@@ -51,7 +54,8 @@ describe('config', () => {
       alpaca: {
         baseUrl: 'https://example.alpaca.test',
         apiKey: 'key',
-        apiSecret: 'secret'
+        apiSecret: 'secret',
+        feed: 'sip'
       }
     });
   });
@@ -61,5 +65,12 @@ describe('config', () => {
     vi.resetModules();
 
     await expect(import('./config.js')).rejects.toThrow('Unsupported market data provider: yahoo');
+  });
+
+  it('rejects unsupported Alpaca market data feeds', async () => {
+    vi.stubEnv('ALPACA_MARKET_DATA_FEED', 'unknown');
+    vi.resetModules();
+
+    await expect(import('./config.js')).rejects.toThrow('Unsupported Alpaca market data feed: unknown');
   });
 });

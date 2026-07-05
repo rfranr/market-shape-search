@@ -13,7 +13,12 @@ export function createMarketDataClient(config: Config): MarketDataClientPort {
       throw new Error('Missing Alpaca credentials. Set ALPACA_API_KEY and ALPACA_API_SECRET.');
     }
 
-    return new AlpacaMarketDataClient(config.alpaca.baseUrl, config.alpaca.apiKey, config.alpaca.apiSecret);
+    return new AlpacaMarketDataClient(
+      config.alpaca.baseUrl,
+      config.alpaca.apiKey,
+      config.alpaca.apiSecret,
+      config.alpaca.feed
+    );
   }
 
   const exhaustiveCheck: never = config.marketDataProvider;

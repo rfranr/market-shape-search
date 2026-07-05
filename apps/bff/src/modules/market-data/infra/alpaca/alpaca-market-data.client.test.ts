@@ -53,7 +53,7 @@ describe('AlpacaMarketDataClient', () => {
       }
     ]);
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://data.alpaca.markets/v2/stocks/bars?symbols=BIO&timeframe=1Day&start=2024-01-01&end=2026-07-05&adjustment=split&limit=10000',
+      'https://data.alpaca.markets/v2/stocks/bars?symbols=BIO&timeframe=1Day&start=2024-01-01&end=2026-07-05&feed=iex&adjustment=split&limit=10000',
       {
         headers: {
           'APCA-API-KEY-ID': 'key',
@@ -97,7 +97,50 @@ describe('AlpacaMarketDataClient', () => {
     expect(candles.map((candle) => candle.timestamp)).toEqual(['2026-07-01T00:00:00Z', '2026-07-02T00:00:00Z']);
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(fetchMock.mock.calls[1]?.[0]).toBe(
-      'https://data.alpaca.markets/v2/stocks/bars?symbols=BIO&timeframe=1Day&start=2024-01-01&end=2026-07-05&adjustment=split&limit=10000&page_token=next-page'
+      'https://data.alpaca.markets/v2/stocks/bars?symbols=BIO&timeframe=1Day&start=2024-01-01&end=2026-07-05&feed=iex&adjustment=split&limit=10000&page_token=next-page'
+    );
+  });
+
+  it('uses the configured default feed when request feed is not provided', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ bars: { BIO: [] }, next_page_token: null }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    const client = new AlpacaMarketDataClient('https://data.alpaca.markets', 'key', 'secret', 'sip');
+
+    await client.downloadHistory(request);
+
+    expect(fetchMock.mock.calls[0]?.[0]).toBe(
+      'https://data.alpaca.markets/v2/stocks/bars?symbols=BIO&timeframe=1Day&start=2024-01-01&end=2026-07-05&feed=sip&adjustment=split&limit=10000'
+    );
+  });
+
+  it('allows request feed to override the configured default feed', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ bars: { BIO: [] }, next_page_token: null }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    const client = new AlpacaMarketDataClient('https://data.alpaca.markets', 'key', 'secret', 'sip');
+
+    await client.downloadHistory({ ...request, feed: 'iex' });
+
+    expect(fetchMock.mock.calls[0]?.[0]).toBe(
+      'https://data.alpaca.markets/v2/stocks/bars?symbols=BIO&timeframe=1Day&start=2024-01-01&end=2026-07-05&feed=iex&adjustment=split&limit=10000'
+    );
+  });
+
+  it('includes Alpaca error body in failed request errors', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('subscription does not permit SIP', { status: 403 })));
+    const client = new AlpacaMarketDataClient('https://data.alpaca.markets', 'key', 'secret');
+
+    await expect(client.downloadHistory(request)).rejects.toThrow(
+      'Alpaca market data request failed: 403 - subscription does not permit SIP'
     );
   });
 });
